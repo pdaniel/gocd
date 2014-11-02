@@ -35,8 +35,8 @@ import static com.thoughtworks.go.util.CachedDigestUtils.md5Hex;
 
 public class FileHandler implements FetchHandler {
 
-    private final File artifact;
-    private final String srcFile;
+    private File artifact;
+    private String srcFile;
     private static final Logger LOG = Logger.getLogger(FileHandler.class);
     private ArtifactMd5Checksums artifactMd5Checksums;
     private ChecksumValidationPublisher checksumValidationPublisher;
@@ -90,6 +90,22 @@ public class FileHandler implements FetchHandler {
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
+    }
+
+    public File getArtifact() {
+        return artifact;
+    }
+
+    public void setArtifact(File artifact) {
+        this.artifact = artifact;
+    }
+
+    public String getSrcFile() {
+        return srcFile;
+    }
+
+    public void setSrcFile(String srcFile) {
+        this.srcFile = srcFile;
     }
 
     public boolean handleResult(int httpCode, DefaultGoPublisher goPublisher) {

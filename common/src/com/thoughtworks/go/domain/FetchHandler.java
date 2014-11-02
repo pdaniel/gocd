@@ -16,6 +16,7 @@
 
 package com.thoughtworks.go.domain;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -30,4 +31,12 @@ public interface FetchHandler extends Serializable {
     boolean handleResult(int returncode, DefaultGoPublisher goPublisher);
 
     void useArtifactMd5Checksums(ArtifactMd5Checksums artifactMd5Checksums);
+
+    public File getArtifact() ;
+
+    public void setArtifact(File artifact) ;
+
+    public String getSrcFile();
+
+    public void setSrcFile(String srcFile) ;
 }

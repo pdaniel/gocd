@@ -22,6 +22,8 @@ import com.thoughtworks.go.domain.DownloadAction;
 import com.thoughtworks.go.domain.FetchHandler;
 import com.thoughtworks.go.domain.JobIdentifier;
 import com.thoughtworks.go.domain.RunIfConfigs;
+import com.thoughtworks.go.util.HandlerUtil;
+import com.thoughtworks.go.util.StringParserUtil;
 import com.thoughtworks.go.util.URLService;
 import com.thoughtworks.go.util.command.CruiseControlException;
 import com.thoughtworks.go.util.command.EnvironmentVariableContext;
@@ -60,6 +62,7 @@ public class FetchArtifactBuilder extends Builder {
 
     private void downloadArtifact(DownloadAction downloadAction, String baseRemoteUrl) throws Exception {
         handler.useArtifactMd5Checksums(checksumFileHandler.getArtifactMd5Checksums());
+        HandlerUtil.rebuildFileHandle(handler);
         pullArtifact(downloadAction, handler.url(baseRemoteUrl, artifactLocator()), handler);
     }
 
@@ -73,10 +76,12 @@ public class FetchArtifactBuilder extends Builder {
     }
 
     public String artifactLocator() {
+//        String src = StringParserUtil.parseEnvVars(getSrc());
         return jobIdentifier.artifactLocator(getSrc());
     }
 
     public String getSrc() {
+        srcdir = StringParserUtil.parseEnvVars(srcdir);
         return srcdir;
     }
 

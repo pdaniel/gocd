@@ -48,6 +48,27 @@
         </jobs>
       </stage>
     </pipeline>
+    <pipeline name="down-pipeline" labeltemplate="down-pipeline-${COUNT}" isLocked="false">
+      <materials>
+        <pipeline pipelineName="simpleGradle" stageName="defaultStage" />
+      </materials>
+      <stage name="defaultStage">
+        <jobs>
+          <job name="defaultJob">
+            <tasks>
+              <exec command="sh">
+                <arg>-c</arg>
+                <arg>echo $GO_PIPELINE_LABEL</arg>
+                <runif status="passed" />
+              </exec>
+              <fetchartifact pipeline="simpleGradle" stage="defaultStage" job="defaultJob" srcfile="${GO_DEPENDENCY_LABEL_SIMPLEGRADLE}.war" dest="eee">
+                <runif status="passed" />
+              </fetchartifact>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
   </pipelines>
   <agents>
     <agent hostname="blrstdcrspair02" ipaddress="10.4.7.202" uuid="f6a76eaa-96ac-43a2-8255-7c898236ba22" />

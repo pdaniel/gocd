@@ -20,6 +20,7 @@ import com.thoughtworks.go.config.validation.FilePathTypeValidator;
 import com.thoughtworks.go.domain.*;
 import com.thoughtworks.go.util.EnvironmentsVariablesHolder;
 import com.thoughtworks.go.util.FileUtil;
+import com.thoughtworks.go.util.StringParserUtil;
 import com.thoughtworks.go.work.GoPublisher;
 import org.apache.commons.lang.StringUtils;
 
@@ -125,13 +126,7 @@ public class ArtifactPlan extends PersistentObject implements Artifact {
     }
 
     private WildcardScanner getArtifactSrc(File rootPath) {
-        String src = getSrc();
-        final Pattern pattern = Pattern.compile("\\$\\{([^}]*)\\}");
-        Matcher matcher = pattern.matcher(src);
-        if (matcher.find()) {
-            src = src.replace("${"+matcher.group(1)+"}", EnvironmentsVariablesHolder.getVariable(matcher.group(1)));
-            System.out.println(matcher.group(1));
-        }
+        String src = StringParserUtil.parseEnvVars(getSrc());
         return new WildcardScanner(rootPath, src);
     }
 

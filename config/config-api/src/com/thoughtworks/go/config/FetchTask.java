@@ -25,6 +25,7 @@ import java.util.Map;
 import com.thoughtworks.go.config.validation.FilePathTypeValidator;
 import com.thoughtworks.go.domain.TaskProperty;
 import com.thoughtworks.go.util.FileUtil;
+import com.thoughtworks.go.util.StringParserUtil;
 import com.thoughtworks.go.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -125,6 +126,7 @@ public class FetchTask extends AbstractTask implements Serializable {
     }
 
     public String getSrc() {
+//        String src = StringParserUtil.parseEnvVars(getSrcfile());
         return StringUtils.isNotEmpty(srcfile) ? getSrcfile() : getSrcdir();
     }
 

@@ -66,6 +66,26 @@ public class ChecksumFileHandler implements FetchHandler {
     }
 
     @Override
+    public File getArtifact() {
+        return null;
+    }
+
+    @Override
+    public void setArtifact(File artifact) {
+
+    }
+
+    @Override
+    public String getSrcFile() {
+        return null;
+    }
+
+    @Override
+    public void setSrcFile(String srcFile) {
+
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
