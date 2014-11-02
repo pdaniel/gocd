@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.thoughtworks.go.util.EnvironmentsVariablesHolder;
 import com.thoughtworks.go.util.GoConstants;
 
 import static java.lang.String.*;
@@ -232,6 +233,7 @@ public class EnvironmentVariableContext implements Serializable {
     }
 
     public void setupRuntimeEnvironment(Map<String, String> env, ConsoleOutputStreamConsumer consumer) {
+        EnvironmentsVariablesHolder environmentsVariablesHolder = new EnvironmentsVariablesHolder();
         for (EnvironmentVariable property : properties) {
             String name = property.name;
             String value = property.value;
@@ -245,6 +247,7 @@ public class EnvironmentVariableContext implements Serializable {
 
                 consumer.stdOutput(line);
                 env.put(name, value);
+                environmentsVariablesHolder.addVariable(name,value);
             }
         }
     }

@@ -18,6 +18,7 @@ package com.thoughtworks.go.config;
 
 import com.thoughtworks.go.config.validation.FilePathTypeValidator;
 import com.thoughtworks.go.domain.*;
+import com.thoughtworks.go.util.EnvironmentsVariablesHolder;
 import com.thoughtworks.go.util.FileUtil;
 import com.thoughtworks.go.work.GoPublisher;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.thoughtworks.go.util.FileUtil.normalizePath;
 import static com.thoughtworks.go.util.FileUtil.subtractPath;
@@ -122,7 +125,14 @@ public class ArtifactPlan extends PersistentObject implements Artifact {
     }
 
     private WildcardScanner getArtifactSrc(File rootPath) {
-        return new WildcardScanner(rootPath, getSrc());
+        String src = getSrc();
+        final Pattern pattern = Pattern.compile("\\$\\{([^}]*)\\}");
+        Matcher matcher = pattern.matcher(src);
+        if (matcher.find()) {
+            src = src.replace("${"+matcher.group(1)+"}", EnvironmentsVariablesHolder.getVariable(matcher.group(1)));
+            System.out.println(matcher.group(1));
+        }
+        return new WildcardScanner(rootPath, src);
     }
 
     protected void publishWithProperties(GoPublisher goPublisher, File fileToUpload, File rootPath) {
